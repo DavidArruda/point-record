@@ -51,7 +51,7 @@ public class TableModel extends DefaultTableModel {
     }
 
     /**
-     * Recupera os completos de um objeto da lista.
+     * Recupera os dados completos de um objeto da lista.
      *
      * @param row
      * @return TableObject
