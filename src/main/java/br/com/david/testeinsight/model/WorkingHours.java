@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.david.testeinsight.model;
 
 /**
- *
- * @author deh0_
+ * Classe modelo para representar Horário de trabalho
+ * @author David Arruda
  */
-public class WorkingHours {
+public class WorkingHours extends AbstractModel{
+    
     
 }
