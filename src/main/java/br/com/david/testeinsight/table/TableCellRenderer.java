@@ -14,7 +14,7 @@ public class TableCellRenderer extends DefaultTableCellRenderer {
 
     /**
      * Altera a cor de fundo de cada celula, se a mesma estiver selecionada a
-     * cor será amarela, e se as linhas forem par então será branco o background
+     * cor será amarela, senão se as linhas forem par então será branco o background,
      * senão será cinza claro
      *
      * @param table
