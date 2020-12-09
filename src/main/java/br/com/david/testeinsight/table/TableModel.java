@@ -1,6 +1,5 @@
 package br.com.david.testeinsight.table;
 
-import br.com.david.testeinsight.table.TableObject;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
