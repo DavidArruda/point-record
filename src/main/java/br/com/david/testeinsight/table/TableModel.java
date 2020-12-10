@@ -59,4 +59,14 @@ public class TableModel extends DefaultTableModel {
         return list.get(row);
     }
 
+    /**
+     * Adiciona uma nova linha no Jtable.
+     *
+     * @param TableObject obj
+     */
+    public void addRow(TableObject obj) {
+        list.add(obj);
+        this.fireTableDataChanged(); // Atualiza o Jtable com o novo registro
+    }
+
 }
