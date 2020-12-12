@@ -69,4 +69,13 @@ public class TableModel extends DefaultTableModel {
         this.fireTableDataChanged(); // Atualiza o Jtable com o novo registro
     }
 
+    /**
+     * Retorna a lista com todos os elementos da Jtable
+     *
+     * @return List<TableObject>
+     */
+    public List<TableObject> getList() {
+        return list;
+    }
+
 }
