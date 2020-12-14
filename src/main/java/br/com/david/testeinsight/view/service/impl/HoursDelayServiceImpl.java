@@ -51,9 +51,4 @@ public class HoursDelayServiceImpl extends CalculateHourServiceImpl implements H
         }
     }
 
-    @Override
-    public void subtractBetweenJtable(JTable tbWorkingHours, JTable tbMarkingMade) {
-        
-    }
-
 }

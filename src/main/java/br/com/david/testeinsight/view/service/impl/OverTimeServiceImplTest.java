@@ -56,9 +56,4 @@ public class OverTimeServiceImplTest extends CalculateHourServiceImpl implements
         }
     }
 
-    @Override
-    public void subtractBetweenJtable(JTable tbWorkingHours, JTable tbMarkingMade) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

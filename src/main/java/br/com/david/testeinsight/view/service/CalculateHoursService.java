@@ -13,8 +13,6 @@ import javax.swing.JTable;
  */
 public interface CalculateHoursService {
     
-    void subtractBetweenJtable(JTable tbWorkingHours, JTable tbMarkingMade);
-    
     /**
      * Calcula as horas extra ou horas em atraso com base na jornada de trabalho e as marcações
      * feitas.
