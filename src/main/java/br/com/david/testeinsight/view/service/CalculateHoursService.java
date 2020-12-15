@@ -22,7 +22,7 @@ public interface CalculateHoursService {
      * @param hoursDelay
      * @throws Exception
      */
-    void subtractBetweenHours(JTable workingHours, JTable markingMade, JTable jTable) throws Exception;
+    TableObject subtractBetweenHours(JTable workingHours, JTable markingMade, JTable jTable) throws Exception;
 
     /**
      * Se return == 0 então não existe horas pedentes.
