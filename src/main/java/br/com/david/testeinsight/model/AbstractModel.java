@@ -26,14 +26,13 @@ public abstract class AbstractModel implements TableObject{
         }
     }
     
-    /**
+   /**
      * Retorna um array com os nomes das colunas que serão apresentadas
      * @return Object[]
      */
     static public Object[] getColumns() {
         return new String[]{"Entrada","Saída"};
     }
-    
     
     // Getters e Setters
     public LocalTime getEntryTime() {
