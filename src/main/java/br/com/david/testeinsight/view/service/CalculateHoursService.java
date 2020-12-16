@@ -15,12 +15,14 @@ public interface CalculateHoursService {
     
     /**
      * Calcula as horas extra ou horas em atraso com base na jornada de trabalho e as marcações
-     * feitas.
+     * feitas. Retorna o objeto que será adicionado jTable de atraso ou hora extra
      *
      * @param workingHours
      * @param markingMade
      * @param hoursDelay
      * @throws Exception
+     * 
+     * @return TableObject
      */
     TableObject subtractBetweenHours(JTable workingHours, JTable markingMade, JTable jTable) throws Exception;
 
@@ -36,13 +38,13 @@ public interface CalculateHoursService {
     int subtractPeriods(WorkingHours workingHours, MarkingMade markingMade);
 
     /**
-     * Calcula o periodo a ser adicionado no JTable
+     * Calcula o periodo a ser adicionado no JTable de Atrasos ou HorasExtra
      *
      * @param workingHours
      * @param markingMade
      * @return
      */
-    LocalTime[] getPeriod(WorkingHours workingHours, MarkingMade markingMade);
+    LocalTime[] getPeriod(WorkingHours workingHours, MarkingMade markingMade); // Falta terminar refinar implementação para pegar todos os periodos Corretemente
 
     /**
      * Retorna a lista do model de um Jtable qualquer. A lista é recuperada via
@@ -62,6 +64,6 @@ public interface CalculateHoursService {
      * @param object
      * @throws Exception
      */
-    void addRowTable(JTable jTable, TableObject object) throws Exception;
+    void addRowTable(JTable jTable, TableObject object) throws Exception; //Falta corrigir implementação. Deu ruim.
 
 }
