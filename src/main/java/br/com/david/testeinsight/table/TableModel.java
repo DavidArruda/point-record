@@ -12,7 +12,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TableModel extends DefaultTableModel {
 
-    private final List<TableObject> list;
+	private static final long serialVersionUID = 1L;
+	
+	private final List<TableObject> list;
 
     /**
      * Construtor. Retornar um TableModel com uma lista de objetos e a descrição
