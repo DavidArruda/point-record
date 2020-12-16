@@ -2,11 +2,15 @@ package br.com.david.testeinsight.view;
 
 import br.com.david.testeinsight.model.HoursDelay;
 import br.com.david.testeinsight.model.MarkingMade;
+import br.com.david.testeinsight.model.OverTime;
 import br.com.david.testeinsight.model.WorkingHours;
 import br.com.david.testeinsight.table.TableCellRenderer;
 import br.com.david.testeinsight.table.TableModel;
+import br.com.david.testeinsight.view.service.CalculateHoursService;
 import br.com.david.testeinsight.view.service.HoursDelayService;
+import br.com.david.testeinsight.view.service.OverTimeServiceTest;
 import br.com.david.testeinsight.view.service.impl.HoursDelayServiceImpl;
+import br.com.david.testeinsight.view.service.impl.OverTimeServiceImplTest;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -17,19 +21,33 @@ import java.util.logging.Logger;
  * @author David Arruda
  */
 public class MainView extends javax.swing.JFrame {
+    
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private int generateId = 0;
 
     //WorkingHours
     private LinkedList<WorkingHours> listWorkingHours = new LinkedList<>();
-    private TableModel tableModel = new TableModel(listWorkingHours, WorkingHours.getColumns());
-    private HoursDelayService delayService = new HoursDelayServiceImpl();
-    
+    private TableModel tbWKHours = new TableModel(listWorkingHours, WorkingHours.getColumnsWorkingHours());
+
     //MarkingMade
     private LinkedList<MarkingMade> listMkMades = new LinkedList<>();
-    private TableModel tbModelMKMade = new TableModel(listMkMades, MarkingMade.getColumns());
-    
+    private TableModel tbModelMKMade = new TableModel(listMkMades, MarkingMade.getColumnsMarkingMade());
+
     //HoursDelay
     private LinkedList<HoursDelay> listHRDelays = new LinkedList<>();
     private TableModel tbModelHRDelay = new TableModel(listHRDelays, HoursDelay.getColumns());
+    
+    //OverTime
+    private LinkedList<OverTime> listOverTime = new LinkedList<>();
+    private TableModel tbModelOverTime= new TableModel(listOverTime, OverTime.getColumns());
+
+    // Services
+    private HoursDelayService delayService = new HoursDelayServiceImpl();
+    private OverTimeServiceTest overTimeService = new OverTimeServiceImplTest();
 
     /**
      * Creates new form MainView
@@ -38,22 +56,28 @@ public class MainView extends javax.swing.JFrame {
         initComponents();
 
         // Table WorkingHours
-        tableWorkingHours.setModel(tableModel); // Define o modelo de dados para esta tabela
+        tableWorkingHours.setModel(tbWKHours); // Define o modelo de dados para esta tabela
         tableWorkingHours.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tableWorkingHours.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tableWorkingHours.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
-        
+
         // Table MarkingMade
         tbMKMade.setModel(tbModelMKMade); // Define o modelo de dados para esta tabela
         tbMKMade.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tbMKMade.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tbMKMade.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
-        
+
         // Table HoursDelays
         tbHRDelays.setModel(tbModelHRDelay); // Define o modelo de dados para esta tabela
         tbHRDelays.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tbHRDelays.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tbHRDelays.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
+        
+        // Table OverTime
+        tbOverTime.setModel(tbModelOverTime); // Define o modelo de dados para esta tabela
+        tbOverTime.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
+        tbOverTime.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
+        tbOverTime.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
     }
 
     /**
@@ -75,6 +99,7 @@ public class MainView extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         btnSaveWkHours = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
         jPanelMKMade = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbMKMade = new javax.swing.JTable();
@@ -85,16 +110,15 @@ public class MainView extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnSaveMKMade = new javax.swing.JButton();
         btnNewMKMade = new javax.swing.JButton();
-        jPanelMKMade1 = new javax.swing.JPanel();
+        txtIdMKMake = new javax.swing.JFormattedTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanelHRDelays = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbHRDelays = new javax.swing.JTable();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        txtEntryTimeMKMade1 = new javax.swing.JFormattedTextField();
-        txtDepartureTimeMKMade1 = new javax.swing.JFormattedTextField();
-        jLabel6 = new javax.swing.JLabel();
-        btnSaveMKMade1 = new javax.swing.JButton();
-        btnNewMKMade1 = new javax.swing.JButton();
+        jPanelOverTime = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbOverTime = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -155,10 +179,10 @@ public class MainView extends javax.swing.JFrame {
                         .addComponent(txtDepartureTimeWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSaveWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,21 +194,26 @@ public class MainView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEntryTimeWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDepartureTimeWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDepartureTimeWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSaveWkHours)
                     .addComponent(jButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanelWkHoursLayout = new javax.swing.GroupLayout(jPanelWkHours);
         jPanelWkHours.setLayout(jPanelWkHoursLayout);
         jPanelWkHoursLayout.setHorizontalGroup(
             jPanelWkHoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelWkHoursLayout.createSequentialGroup()
+            .addGroup(jPanelWkHoursLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelWkHoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelWkHoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jSeparator2))
                 .addContainerGap())
         );
         jPanelWkHoursLayout.setVerticalGroup(
@@ -192,8 +221,10 @@ public class MainView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelWkHoursLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -238,6 +269,19 @@ public class MainView extends javax.swing.JFrame {
         });
 
         btnNewMKMade.setText("Novo");
+        btnNewMKMade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewMKMadeActionPerformed(evt);
+            }
+        });
+
+        try {
+            txtIdMKMake.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jLabel7.setText("ID Jornada de trabalho");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -250,14 +294,20 @@ public class MainView extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtDepartureTimeMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtDepartureTimeMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
+                        .addComponent(txtIdMKMake, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                        .addGap(14, 14, 14)
                         .addComponent(btnNewMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSaveMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(42, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,25 +315,34 @@ public class MainView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEntryTimeMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDepartureTimeMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSaveMKMade)
-                    .addComponent(btnNewMKMade))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel7))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtEntryTimeMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDepartureTimeMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtIdMKMake, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnNewMKMade)
+                            .addComponent(btnSaveMKMade))
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout jPanelMKMadeLayout = new javax.swing.GroupLayout(jPanelMKMade);
         jPanelMKMade.setLayout(jPanelMKMadeLayout);
         jPanelMKMadeLayout.setHorizontalGroup(
             jPanelMKMadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMKMadeLayout.createSequentialGroup()
+            .addGroup(jPanelMKMadeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelMKMadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelMKMadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jSeparator1))
                 .addContainerGap())
         );
         jPanelMKMadeLayout.setVerticalGroup(
@@ -291,12 +350,14 @@ public class MainView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMKMadeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanelMKMade1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Marcações"));
+        jPanelHRDelays.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Horas de atraso"));
 
         tbHRDelays.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -311,87 +372,52 @@ public class MainView extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tbHRDelays);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Cadastrar"));
-
-        jLabel5.setText("Entrada");
-
-        try {
-            txtEntryTimeMKMade1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        try {
-            txtDepartureTimeMKMade1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        jLabel6.setText("Saída");
-
-        btnSaveMKMade1.setText("Salvar");
-        btnSaveMKMade1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveMKMade1ActionPerformed(evt);
-            }
-        });
-
-        btnNewMKMade1.setText("Novo");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelHRDelaysLayout = new javax.swing.GroupLayout(jPanelHRDelays);
+        jPanelHRDelays.setLayout(jPanelHRDelaysLayout);
+        jPanelHRDelaysLayout.setHorizontalGroup(
+            jPanelHRDelaysLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelHRDelaysLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtEntryTimeMKMade1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(txtDepartureTimeMKMade1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(btnNewMKMade1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSaveMKMade1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEntryTimeMKMade1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDepartureTimeMKMade1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSaveMKMade1)
-                    .addComponent(btnNewMKMade1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanelMKMade1Layout = new javax.swing.GroupLayout(jPanelMKMade1);
-        jPanelMKMade1.setLayout(jPanelMKMade1Layout);
-        jPanelMKMade1Layout.setHorizontalGroup(
-            jPanelMKMade1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMKMade1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelMKMade1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanelMKMade1Layout.setVerticalGroup(
-            jPanelMKMade1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMKMade1Layout.createSequentialGroup()
+        jPanelHRDelaysLayout.setVerticalGroup(
+            jPanelHRDelaysLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHRDelaysLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanelOverTime.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Horas Extra"));
+
+        tbOverTime.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tbOverTime);
+
+        javax.swing.GroupLayout jPanelOverTimeLayout = new javax.swing.GroupLayout(jPanelOverTime);
+        jPanelOverTime.setLayout(jPanelOverTimeLayout);
+        jPanelOverTimeLayout.setHorizontalGroup(
+            jPanelOverTimeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOverTimeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelOverTimeLayout.setVerticalGroup(
+            jPanelOverTimeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOverTimeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -401,23 +427,26 @@ public class MainView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanelWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanelMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanelMKMade1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanelHRDelays, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelWkHours, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanelMKMade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelOverTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanelWkHours, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelMKMade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanelMKMade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelWkHours, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jPanelMKMade1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelOverTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelHRDelays, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -428,28 +457,82 @@ public class MainView extends javax.swing.JFrame {
         WorkingHours workingHours = new WorkingHours();
         workingHours.setEntryTime(LocalTime.parse(txtEntryTimeWkHours.getText()));
         workingHours.setDepartureTime(LocalTime.parse(txtDepartureTimeWkHours.getText()));
+        
+        int newId = generateId;
+        workingHours.setId(newId);
+        
+        generateId++;
 
-        tableModel.addRow(workingHours);
+        tbWKHours.addRow(workingHours);
     }//GEN-LAST:event_btnSaveWkHoursActionPerformed
 
     private void btnSaveMKMadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveMKMadeActionPerformed
-        MarkingMade markingMade = new MarkingMade();
-        markingMade.setEntryTime(LocalTime.parse(txtEntryTimeMKMade.getText()));
-        markingMade.setDepartureTime(LocalTime.parse(txtDepartureTimeMKMade.getText()));
-        
-        tbModelMKMade.addRow(markingMade);
-        
+
         try {
-            delayService.delayHours(tableWorkingHours, tbMKMade, tbHRDelays);
+
+            MarkingMade markingMade = new MarkingMade();
+            markingMade.setEntryTime(LocalTime.parse(txtEntryTimeMKMade.getText()));
+            markingMade.setDepartureTime(LocalTime.parse(txtDepartureTimeMKMade.getText()));
+
+            //Relaciona a marcação feita com uma jornada de  trabalho
+            WorkingHours workingHours = listWorkingHours.get(Integer.parseInt(txtIdMKMake.getText()));
+            
+            markingMade.setWorkingHours(workingHours);
+
+            // Adiciona na tabela
+            tbModelMKMade.addRow(markingMade);
+
+            //Obtem as horas pendentes
+            int programmedHours = workingHours.getDepartureTime().getHour() - workingHours.getEntryTime().getHour(); // Subtrai saida - entrada
+
+            int hoursWorked = markingMade.getDepartureTime().getHour() - markingMade.getEntryTime().getHour(); // Subtrai saida - entrada
+
+            int result = hoursWorked - programmedHours;
+
+            if (result < 0) {
+            	tbModelHRDelay.addRow(delayService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbHRDelays));
+                
+            
+            } else if (result > 0) {
+                tbModelOverTime.addRow(overTimeService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbOverTime));
+            
+            } else if (result == 0 && markingMade.getEntryTime().isBefore(workingHours.getEntryTime())) {
+            	//Hora extra
+            	OverTime newOverTime = new OverTime();
+            	newOverTime.setEntryTime(markingMade.getEntryTime());
+            	newOverTime.setDepartureTime(workingHours.getEntryTime());
+            	tbModelOverTime.addRow(newOverTime);
+            	
+            	//Atraso
+            	HoursDelay newHoursDelay = new HoursDelay();
+            	newHoursDelay.setEntryTime(markingMade.getDepartureTime());
+            	newHoursDelay.setDepartureTime(workingHours.getDepartureTime());
+            	tbModelHRDelay.addRow(newHoursDelay);
+            	
+            	
+            } else if (result == 0 && markingMade.getEntryTime().isAfter(workingHours.getEntryTime())) {
+            	//Hora extra
+            	OverTime newOverTime = new OverTime();
+            	newOverTime.setEntryTime(workingHours.getDepartureTime());
+            	newOverTime.setDepartureTime(markingMade.getDepartureTime());
+            	tbModelOverTime.addRow(newOverTime);
+            	
+            	//Atraso
+            	HoursDelay newHoursDelay = new HoursDelay();
+            	newHoursDelay.setEntryTime(workingHours.getEntryTime());
+            	newHoursDelay.setDepartureTime(markingMade.getEntryTime());
+            	tbModelHRDelay.addRow(newHoursDelay);
+            }
+            
         } catch (Exception ex) {
             Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_btnSaveMKMadeActionPerformed
 
-    private void btnSaveMKMade1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveMKMade1ActionPerformed
+    private void btnNewMKMadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewMKMadeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSaveMKMade1ActionPerformed
+    }//GEN-LAST:event_btnNewMKMadeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -488,34 +571,34 @@ public class MainView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNewMKMade;
-    private javax.swing.JButton btnNewMKMade1;
     private javax.swing.JButton btnSaveMKMade;
-    private javax.swing.JButton btnSaveMKMade1;
     private javax.swing.JButton btnSaveWkHours;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanelHRDelays;
     private javax.swing.JPanel jPanelMKMade;
-    private javax.swing.JPanel jPanelMKMade1;
+    private javax.swing.JPanel jPanelOverTime;
     private javax.swing.JPanel jPanelWkHours;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable tableWorkingHours;
     private javax.swing.JTable tbHRDelays;
     private javax.swing.JTable tbMKMade;
+    private javax.swing.JTable tbOverTime;
     private javax.swing.JFormattedTextField txtDepartureTimeMKMade;
-    private javax.swing.JFormattedTextField txtDepartureTimeMKMade1;
     private javax.swing.JFormattedTextField txtDepartureTimeWkHours;
     private javax.swing.JFormattedTextField txtEntryTimeMKMade;
-    private javax.swing.JFormattedTextField txtEntryTimeMKMade1;
     private javax.swing.JFormattedTextField txtEntryTimeWkHours;
+    private javax.swing.JFormattedTextField txtIdMKMake;
     // End of variables declaration//GEN-END:variables
 }
