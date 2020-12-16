@@ -1,4 +1,4 @@
-package br.com.david.testeinsight.view.service.impl;
+package br.com.david.testeinsight.service.impl;
 
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -9,7 +9,7 @@ import javax.swing.table.TableModel;
 import br.com.david.testeinsight.model.MarkingMade;
 import br.com.david.testeinsight.model.WorkingHours;
 import br.com.david.testeinsight.table.TableObject;
-import br.com.david.testeinsight.view.service.CalculateHoursService;
+import br.com.david.testeinsight.service.CalculateHoursService;
 
 /**
  *

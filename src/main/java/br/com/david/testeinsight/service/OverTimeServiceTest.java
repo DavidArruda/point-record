@@ -1,4 +1,4 @@
-package br.com.david.testeinsight.view.service;
+package br.com.david.testeinsight.service;
 
 /**
  * Service para responsável pelas horas extra

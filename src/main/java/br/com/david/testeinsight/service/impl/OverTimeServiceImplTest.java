@@ -1,4 +1,4 @@
-package br.com.david.testeinsight.view.service.impl;
+package br.com.david.testeinsight.service.impl;
 
 import java.time.LocalTime;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import javax.swing.JTable;
 import br.com.david.testeinsight.model.MarkingMade;
 import br.com.david.testeinsight.model.OverTime;
 import br.com.david.testeinsight.model.WorkingHours;
-import br.com.david.testeinsight.view.service.OverTimeServiceTest;
+import br.com.david.testeinsight.service.OverTimeServiceTest;
 
 /**
  *

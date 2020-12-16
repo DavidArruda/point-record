@@ -1,9 +1,9 @@
-package br.com.david.testeinsight.view.service.impl;
+package br.com.david.testeinsight.service.impl;
 
 import br.com.david.testeinsight.model.HoursDelay;
 import br.com.david.testeinsight.model.MarkingMade;
 import br.com.david.testeinsight.model.WorkingHours;
-import br.com.david.testeinsight.view.service.HoursDelayService;
+import br.com.david.testeinsight.service.HoursDelayService;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import javax.swing.JTable;

@@ -1,4 +1,4 @@
-package br.com.david.testeinsight.view.service;
+package br.com.david.testeinsight.service;
 
 import br.com.david.testeinsight.model.MarkingMade;
 import br.com.david.testeinsight.model.WorkingHours;
