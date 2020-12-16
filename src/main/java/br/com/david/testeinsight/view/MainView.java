@@ -6,7 +6,6 @@ import br.com.david.testeinsight.model.OverTime;
 import br.com.david.testeinsight.model.WorkingHours;
 import br.com.david.testeinsight.table.TableCellRenderer;
 import br.com.david.testeinsight.table.TableModel;
-import br.com.david.testeinsight.view.service.CalculateHoursService;
 import br.com.david.testeinsight.view.service.HoursDelayService;
 import br.com.david.testeinsight.view.service.OverTimeServiceTest;
 import br.com.david.testeinsight.view.service.impl.HoursDelayServiceImpl;
@@ -98,7 +97,7 @@ public class MainView extends javax.swing.JFrame {
         txtDepartureTimeWkHours = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         btnSaveWkHours = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnNewWKHours = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jPanelMKMade = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -162,7 +161,12 @@ public class MainView extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Novo");
+        btnNewWKHours.setText("Novo");
+        btnNewWKHours.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewWKHoursActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -178,7 +182,7 @@ public class MainView extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtDepartureTimeWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNewWKHours, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSaveWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -200,7 +204,7 @@ public class MainView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSaveWkHours)
-                    .addComponent(jButton1))
+                    .addComponent(btnNewWKHours))
                 .addContainerGap())
         );
 
@@ -464,6 +468,11 @@ public class MainView extends javax.swing.JFrame {
         generateId++;
 
         tbWKHours.addRow(workingHours);
+        
+        if(listWorkingHours.size() >= 3) {
+            btnSaveWkHours.setEnabled(false);
+            btnNewWKHours.setEnabled(false);
+        }
     }//GEN-LAST:event_btnSaveWkHoursActionPerformed
 
     private void btnSaveMKMadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveMKMadeActionPerformed
@@ -531,8 +540,15 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSaveMKMadeActionPerformed
 
     private void btnNewMKMadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewMKMadeActionPerformed
-        // TODO add your handling code here:
+        txtDepartureTimeMKMade.setText("");
+        txtEntryTimeMKMade.setText("");
+        txtIdMKMake.setText("");
     }//GEN-LAST:event_btnNewMKMadeActionPerformed
+
+    private void btnNewWKHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewWKHoursActionPerformed
+        txtDepartureTimeWkHours.setText("");
+        txtEntryTimeWkHours.setText("");
+    }//GEN-LAST:event_btnNewWKHoursActionPerformed
 
     /**
      * @param args the command line arguments
@@ -571,9 +587,9 @@ public class MainView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNewMKMade;
+    private javax.swing.JButton btnNewWKHours;
     private javax.swing.JButton btnSaveMKMade;
     private javax.swing.JButton btnSaveWkHours;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
