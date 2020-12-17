@@ -9,6 +9,7 @@ import br.com.david.testeinsight.model.MarkingMade;
 import br.com.david.testeinsight.model.OverTime;
 import br.com.david.testeinsight.model.WorkingHours;
 import br.com.david.testeinsight.service.OverTimeServiceTest;
+import br.com.david.testeinsight.table.TableModel;
 
 /**
  *
@@ -17,7 +18,7 @@ import br.com.david.testeinsight.service.OverTimeServiceTest;
 public class OverTimeServiceImplTest extends CalculateHourServiceImpl implements OverTimeServiceTest {
 
 	@Override
-	public OverTime subtractBetweenHours(JTable workingHours, JTable markingMade, JTable tbOverTime) throws Exception {
+	public void subtractBetweenHours(JTable workingHours, JTable markingMade, TableModel tbOverTime) throws Exception {
 		LinkedList<WorkingHours> listWorkingHours = getList(workingHours);
 		LinkedList<MarkingMade> listMKMades = getList(markingMade);
 
@@ -28,39 +29,52 @@ public class OverTimeServiceImplTest extends CalculateHourServiceImpl implements
 		// Pega o periodo para ser inserido no jTable de hora extra
 		LocalTime[] entryAndDeparture = getPeriod(jornadaTrabalho, marcacaoFeita);
 
-		// Cria o novo overTime
+		// Cria um novo Overtime
 		OverTime overTime = new OverTime();
 		overTime.setEntryTime(entryAndDeparture[0]);
 		overTime.setDepartureTime(entryAndDeparture[1]);
 
 		// Insere no jTable
-		return overTime;
+		tbOverTime.addRow(overTime);
+
+		if (entryAndDeparture.length == 4) {
+			OverTime overTime2 = new OverTime();
+			overTime2.setEntryTime(entryAndDeparture[2]);
+			overTime2.setDepartureTime(entryAndDeparture[3]);
+
+			// Insere no JTable
+			tbOverTime.addRow(overTime2);
+		}
 
 	}
 
 	@Override
 	public LocalTime[] getPeriod(WorkingHours workingHours, MarkingMade markingMade) {
+
+		LinkedList<LocalTime> oversTime = new LinkedList<>();
+
 		if (markingMade.getEntryTime().isBefore(workingHours.getEntryTime())) {
 			LocalTime entry = LocalTime.of(markingMade.getEntryTime().getHour(),
 					markingMade.getEntryTime().getMinute());
 			LocalTime departure = LocalTime.of(workingHours.getEntryTime().getHour(),
 					workingHours.getEntryTime().getMinute());
 
-			LocalTime[] period = { entry, departure };
+			oversTime.add(entry);
+			oversTime.add(departure);
+		}
 
-			return period;
-
-		} else {
+		if (markingMade.getDepartureTime().isAfter(workingHours.getDepartureTime())) {
 			LocalTime entry = LocalTime.of(workingHours.getDepartureTime().getHour(),
 					workingHours.getDepartureTime().getMinute());
 
 			LocalTime departure = LocalTime.of(markingMade.getDepartureTime().getHour(),
 					markingMade.getDepartureTime().getMinute());
 
-			LocalTime[] period = { entry, departure };
-
-			return period;
+			oversTime.add(entry);
+			oversTime.add(departure);
 		}
+
+		return oversTime.toArray(new LocalTime[oversTime.size()]);
 	}
 
 }
