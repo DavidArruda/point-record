@@ -1,61 +1,62 @@
 package br.com.david.testeinsight.model;
 
+import java.time.LocalDateTime;
+
 import br.com.david.testeinsight.table.TableObject;
-import java.time.LocalTime;
 
 /**
  * Classe abstrata para as models
  *
  * @author David Arruda
  */
-public abstract class AbstractModel implements TableObject{
+public abstract class AbstractModel implements TableObject {
 
-    protected LocalTime entryTime;
+	protected LocalDateTime entryTime;
 
-    protected LocalTime departureTime;
+	protected LocalDateTime departureTime;
 
-    @Override
-    public Object value(int column) {   
-        switch (column) {
-            case 0:
-                return entryTime.toString();
-            case 1:
-                return departureTime.toString();
-            default: 
-                return" - ";
-        }
-    }
-    
-   /**
-     * Retorna um array com os nomes das colunas que serão apresentadas
-     * @return Object[]
-     */
-    static public Object[] getColumns() {
-        return new String[]{"Entrada","Saída"};
-    }
-    
-    // Getters e Setters
-    public LocalTime getEntryTime() {
-        return entryTime;
-    }
+	@Override
+	public Object value(int column) {
+		switch (column) {
+		case 0:
+			return entryTime.toString();
+		case 1:
+			return departureTime.toString();
+		default:
+			return " - ";
+		}
+	}
 
-    public void setEntryTime(LocalTime entryTime) {
-        this.entryTime = entryTime;
-    }
+	/**
+	 * Retorna um array com os nomes das colunas que serão apresentadas
+	 * 
+	 * @return Object[]
+	 */
+	static public Object[] getColumns() {
+		return new String[] { "Entrada", "Saída" };
+	}
 
-    public LocalTime getDepartureTime() {
-        return departureTime;
-    }
+	// Getters e Setters
+	public LocalDateTime getEntryTime() {
+		return entryTime;
+	}
 
-    public void setDepartureTime(LocalTime departureTime) {
-        this.departureTime = departureTime;
-    }
+	public void setEntryTime(LocalDateTime entryTime) {
+		this.entryTime = entryTime;
+	}
 
-    //ToString
-    @Override
-    public String toString() {
-        return entryTime + "," + departureTime;
-    }
-   
-    
+	public LocalDateTime getDepartureTime() {
+		return departureTime;
+	}
+
+	public void setDepartureTime(LocalDateTime departureTime) {
+		this.departureTime = departureTime;
+	}
+
+	// ToString
+	@Override
+	public String toString() {
+		return entryTime + "," + departureTime;
+	}
+
 }
