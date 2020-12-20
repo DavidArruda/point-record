@@ -1,4 +1,4 @@
-package br.com.david.testeinsight.validate;
+package br.com.david.testeinsight.validator;
 
 /**
  *
