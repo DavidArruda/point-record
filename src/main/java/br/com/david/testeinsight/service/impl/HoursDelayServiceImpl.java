@@ -1,16 +1,16 @@
 package br.com.david.testeinsight.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+import javax.swing.JTable;
+
 import br.com.david.testeinsight.model.HoursDelay;
 import br.com.david.testeinsight.model.MarkingMade;
 import br.com.david.testeinsight.model.WorkingHours;
 import br.com.david.testeinsight.service.HoursDelayService;
 import br.com.david.testeinsight.table.TableModel;
-import br.com.david.testeinsight.table.TableObject;
-
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import javax.swing.JTable;
 
 /**
  *
@@ -28,7 +28,7 @@ public class HoursDelayServiceImpl extends CalculateHourServiceImpl implements H
 		var jornadaTrabalho = listWorkingHours.getLast();
 		var marcacaoFeita = listMKMades.getLast();
 
-		LocalTime[] entryAndDeparture = getPeriod(jornadaTrabalho, marcacaoFeita);
+		LocalDateTime[] entryAndDeparture = getPeriod(jornadaTrabalho, marcacaoFeita);
 
 		HoursDelay hoursDelay = new HoursDelay();
 		hoursDelay.setEntryTime(entryAndDeparture[0]);
@@ -49,44 +49,27 @@ public class HoursDelayServiceImpl extends CalculateHourServiceImpl implements H
 	}
 
 	@Override
-	public LocalTime[] getPeriod(WorkingHours workingHours, MarkingMade markingMade) {
-		ArrayList<LocalTime> delays = new ArrayList<>();
+	public LocalDateTime[] getPeriod(WorkingHours workingHours, MarkingMade markingMade) {
+		ArrayList<LocalDateTime> delays = new ArrayList<>();
 
 		if (markingMade.getEntryTime().isAfter(workingHours.getEntryTime())) {
-			LocalTime entry = LocalTime.of(workingHours.getEntryTime().getHour(),
-					workingHours.getEntryTime().getMinute());
-			LocalTime departure = LocalTime.of(markingMade.getEntryTime().getHour(),
-					markingMade.getEntryTime().getMinute());
+			LocalDateTime entry = workingHours.getEntryTime();
+			LocalDateTime departure = markingMade.getEntryTime();
 
 			delays.add(entry);
 			delays.add(departure);
 
-			/*
-			 * if (markingMade.getDepartureTime().isBefore(workingHours.getDepartureTime()))
-			 * { LocalTime entry2 = LocalTime.of(markingMade.getDepartureTime().getHour(),
-			 * markingMade.getDepartureTime().getMinute()); LocalTime departure2 =
-			 * LocalTime.of(workingHours.getDepartureTime().getHour(),
-			 * workingHours.getDepartureTime().getMinute());
-			 * 
-			 * LocalTime[] period = { entry, departure, entry2, departure2 }; return period;
-			 * }
-			 * 
-			 * LocalTime[] period = { entry, departure }; return period;
-			 */
 		}
 
 		if (markingMade.getDepartureTime().isBefore(workingHours.getDepartureTime())) {
-
-			LocalTime entry = LocalTime.of(markingMade.getDepartureTime().getHour(),
-					markingMade.getDepartureTime().getMinute());
-			LocalTime departure = LocalTime.of(workingHours.getDepartureTime().getHour(),
-					workingHours.getDepartureTime().getMinute());
+			LocalDateTime entry = markingMade.getDepartureTime();
+			LocalDateTime departure = workingHours.getDepartureTime();
 
 			delays.add(entry);
 			delays.add(departure);
 		}
 
-		return delays.toArray(new LocalTime[delays.size()]);
+		return delays.toArray(new LocalDateTime[delays.size()]);
 	}
 
 }
