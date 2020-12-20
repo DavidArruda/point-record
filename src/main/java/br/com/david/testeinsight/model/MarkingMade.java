@@ -1,5 +1,7 @@
 package br.com.david.testeinsight.model;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author David Arruda
@@ -12,9 +14,9 @@ public class MarkingMade extends AbstractModel {
     public Object value(int column) {   
         switch (column) {
             case 0:
-                return entryTime.toString();
+                return entryTime.format(DateTimeFormatter.ofPattern("hh:mm"));
             case 1:
-                return departureTime.toString();
+                return departureTime.format(DateTimeFormatter.ofPattern("hh:mm"));
             case 2:
                 return workingHours.getId().toString();
             default: 
@@ -22,7 +24,7 @@ public class MarkingMade extends AbstractModel {
         }
     }
 
-    static public Object[] getColumnsMarkingMade() {
+    public static Object[] getColumnsMarkingMade() {
         return new String[]{"Entrada","Saída", "Jornada de Trabalho"};
     }
 

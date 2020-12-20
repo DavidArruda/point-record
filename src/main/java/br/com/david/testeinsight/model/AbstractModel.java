@@ -1,6 +1,7 @@
 package br.com.david.testeinsight.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import br.com.david.testeinsight.table.TableObject;
 
@@ -19,9 +20,9 @@ public abstract class AbstractModel implements TableObject {
 	public Object value(int column) {
 		switch (column) {
 		case 0:
-			return entryTime.toString();
+			return entryTime.format(DateTimeFormatter.ofPattern("hh:mm"));
 		case 1:
-			return departureTime.toString();
+			return departureTime.format(DateTimeFormatter.ofPattern("hh:mm"));
 		default:
 			return " - ";
 		}
@@ -32,7 +33,7 @@ public abstract class AbstractModel implements TableObject {
 	 * 
 	 * @return Object[]
 	 */
-	static public Object[] getColumns() {
+	public static Object[] getColumns() {
 		return new String[] { "Entrada", "Saída" };
 	}
 
