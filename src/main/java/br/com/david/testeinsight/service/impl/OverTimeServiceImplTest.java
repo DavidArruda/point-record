@@ -1,6 +1,6 @@
 package br.com.david.testeinsight.service.impl;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import javax.swing.JTable;
@@ -27,7 +27,7 @@ public class OverTimeServiceImplTest extends CalculateHourServiceImpl implements
 		var marcacaoFeita = listMKMades.getLast();
 
 		// Pega o periodo para ser inserido no jTable de hora extra
-		LocalTime[] entryAndDeparture = getPeriod(jornadaTrabalho, marcacaoFeita);
+		LocalDateTime[] entryAndDeparture = getPeriod(jornadaTrabalho, marcacaoFeita);
 
 		// Cria um novo Overtime
 		OverTime overTime = new OverTime();
@@ -49,32 +49,28 @@ public class OverTimeServiceImplTest extends CalculateHourServiceImpl implements
 	}
 
 	@Override
-	public LocalTime[] getPeriod(WorkingHours workingHours, MarkingMade markingMade) {
+	public LocalDateTime[] getPeriod(WorkingHours workingHours, MarkingMade markingMade) {
 
-		LinkedList<LocalTime> oversTime = new LinkedList<>();
+		LinkedList<LocalDateTime> oversTime = new LinkedList<>();
 
 		if (markingMade.getEntryTime().isBefore(workingHours.getEntryTime())) {
-			LocalTime entry = LocalTime.of(markingMade.getEntryTime().getHour(),
-					markingMade.getEntryTime().getMinute());
-			LocalTime departure = LocalTime.of(workingHours.getEntryTime().getHour(),
-					workingHours.getEntryTime().getMinute());
+			LocalDateTime entry = markingMade.getEntryTime();
+			LocalDateTime departure = workingHours.getEntryTime();
 
 			oversTime.add(entry);
 			oversTime.add(departure);
 		}
 
 		if (markingMade.getDepartureTime().isAfter(workingHours.getDepartureTime())) {
-			LocalTime entry = LocalTime.of(workingHours.getDepartureTime().getHour(),
-					workingHours.getDepartureTime().getMinute());
+			LocalDateTime entry = workingHours.getDepartureTime();
 
-			LocalTime departure = LocalTime.of(markingMade.getDepartureTime().getHour(),
-					markingMade.getDepartureTime().getMinute());
+			LocalDateTime departure = markingMade.getDepartureTime();
 
 			oversTime.add(entry);
 			oversTime.add(departure);
 		}
 
-		return oversTime.toArray(new LocalTime[oversTime.size()]);
+		return oversTime.toArray(new LocalDateTime[oversTime.size()]);
 	}
 
 }
