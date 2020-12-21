@@ -9,5 +9,5 @@ package br.com.david.testeinsight.validator;
  */
 public interface FieldValidator<T> {
 
-	boolean validate(T value);
+	boolean validate(T value) throws Exception;
 }
