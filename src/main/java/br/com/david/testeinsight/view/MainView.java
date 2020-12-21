@@ -7,16 +7,19 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
+import br.com.david.testeinsight.controller.MarkingMadeController;
 import br.com.david.testeinsight.model.HoursDelay;
 import br.com.david.testeinsight.model.MarkingMade;
 import br.com.david.testeinsight.model.OverTime;
 import br.com.david.testeinsight.model.WorkingHours;
-import br.com.david.testeinsight.service.HoursDelayService;
-import br.com.david.testeinsight.service.OverTimeServiceTest;
-import br.com.david.testeinsight.service.impl.HoursDelayServiceImpl;
-import br.com.david.testeinsight.service.impl.OverTimeServiceImplTest;
 import br.com.david.testeinsight.table.TableCellRenderer;
 import br.com.david.testeinsight.table.TableModel;
+import br.com.david.testeinsight.validator.MarkingMadeValidator;
+import br.com.david.testeinsight.validator.WorkingHoursValidator;
+import br.com.david.testeinsight.validator.impl.MarkingMadeValidatorImpl;
+import br.com.david.testeinsight.validator.impl.WorkingHoursValidatorImpl;
 
 /**
  *
@@ -47,9 +50,12 @@ public class MainView extends javax.swing.JFrame {
     private LinkedList<OverTime> listOverTime = new LinkedList<>();
     private TableModel tbModelOverTime= new TableModel(listOverTime, OverTime.getColumns());
 
-    // Services
-    private HoursDelayService delayService = new HoursDelayServiceImpl();
-    private OverTimeServiceTest overTimeService = new OverTimeServiceImplTest();
+    // CONTROLLER
+    private MarkingMadeController controller = new MarkingMadeController();
+    
+    // VALIDATES
+    WorkingHoursValidator validatorWK = new WorkingHoursValidatorImpl();
+    MarkingMadeValidator validatorMK = new MarkingMadeValidatorImpl();
 
     /**
      * Creates new form MainView
@@ -463,139 +469,86 @@ public class MainView extends javax.swing.JFrame {
     private void btnSaveWkHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveWkHoursActionPerformed
         WorkingHours workingHours = new WorkingHours();
         
-        LocalDate date = LocalDate.now();
-        LocalTime entryTime = LocalTime.parse(txtEntryTimeWkHours.getText().toString());
-        LocalTime departureTime = LocalTime.parse(txtDepartureTimeWkHours.getText().toString());
-        
-        workingHours.setEntryTime(LocalDateTime.of(date, entryTime));
-        workingHours.setDepartureTime(LocalDateTime.of(date, departureTime));
-        
-        // VERIFICA SE O HORARIO DE ENTRADA É MAIOR QUE O HORÁRIO DE SAIDA
-        if (entryTime.getHour() > departureTime.getHour()) {
-        	workingHours.setDepartureTime(workingHours.getDepartureTime().plusDays(1)); // MUDA A SAÍDA PARA O PRÓXIMO DIA
-		
-        }
-        
-        int newId = generateId;
-        workingHours.setId(newId);
-        
-        generateId++;
+		try {
+			if (validatorWK.validate(new String[] { txtEntryTimeWkHours.getText(), txtDepartureTimeWkHours.getText() })) {
 
-        tbWKHours.addRow(workingHours);
-        
-        if(listWorkingHours.size() >= 3) {
-            btnSaveWkHours.setEnabled(false);
-            btnNewWKHours.setEnabled(false);
-        }
+				LocalDate date = LocalDate.now();
+				LocalTime entryTime = LocalTime.parse(txtEntryTimeWkHours.getText().toString());
+				LocalTime departureTime = LocalTime.parse(txtDepartureTimeWkHours.getText().toString());
+
+				workingHours.setEntryTime(LocalDateTime.of(date, entryTime));
+				workingHours.setDepartureTime(LocalDateTime.of(date, departureTime));
+
+				// VERIFICA SE O HORARIO DE ENTRADA É MAIOR QUE O HORÁRIO DE SAIDA
+				if (entryTime.getHour() > departureTime.getHour()) {
+					workingHours.setDepartureTime(workingHours.getDepartureTime().plusDays(1)); // MUDA A SAÍDA PARA O PRÓXIMO DIA
+				}
+
+				int newId = generateId;
+				workingHours.setId(newId);
+
+				generateId++;
+
+				tbWKHours.addRow(workingHours);
+
+				if (listWorkingHours.size() >= 3) {
+					btnSaveWkHours.setEnabled(false);
+					btnNewWKHours.setEnabled(false);
+				}
+			}
+			
+		} catch (Exception e) {
+			msgInvalidTime();
+			e.printStackTrace();
+		}
+		
     }//GEN-LAST:event_btnSaveWkHoursActionPerformed
 
+	/**
+	 * 
+	 */
+	private void msgInvalidTime() {
+		JOptionPane.showMessageDialog(null, "Digite um horário válido. Ex 08:45");
+	}
+
     private void btnSaveMKMadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveMKMadeActionPerformed
-
+    	
         try {
+        	
+			if (validatorMK.validate(new String[] { txtEntryTimeMKMade.getText().toString(),
+					txtDepartureTimeMKMade.getText().toString() })) {
 
-        	// CRIA O OBJETO DE MARCAÇÃO
-            MarkingMade markingMade = new MarkingMade();
-            
-            // CRIA DA DATE E HORARIO DA MARCAÇÃO
-            LocalDate date = LocalDate.now();
-            LocalTime entryTime = LocalTime.parse(txtEntryTimeMKMade.getText().toString());
-            LocalTime departureTime = LocalTime.parse(txtDepartureTimeMKMade.getText().toString());
-            
-            //SETA O OBJETO DE MARCAÇÃO COM A DATA DA MARCAÇÃO
-            markingMade.setEntryTime(LocalDateTime.of(date,entryTime));
-            markingMade.setDepartureTime(LocalDateTime.of(date, departureTime));
+				// CRIA O OBJETO DE MARCAÇÃO
+				MarkingMade markingMade = new MarkingMade();
 
-            //Relaciona a marcação feita com uma jornada de  trabalho
-            WorkingHours workingHours = listWorkingHours.get(Integer.parseInt(txtIdMKMake.getText()));
-            markingMade.setWorkingHours(workingHours);
-            
-            // PEGA A DIFERENÇA DO HORARIO DE ENTRADA (HORARIOS DE TRABALHO) COM O HORARIO DE ENTRADA (MARCAÇÃO)
-            int subtracteEntry = markingMade.getWorkingHours().getEntryTime().getHour() - entryTime.getHour();
-            // SOMA ENTRADA (HORARIOS DE TRABALHO) COM A SUBTRACT_ENTRY
-            int resultEntrys = markingMade.getWorkingHours().getEntryTime().getHour() + subtracteEntry;
-            
-            
-            // PEGA A DIFERENÇA DO HORARIO DE ENTRADA (HORARIOS DE TRABALHO) COM O HORARIO DE SAÍDA (MARCAÇÃO)
-            int subtractDepartures = markingMade.getWorkingHours().getEntryTime().getHour() - departureTime.getHour();
-            // SOMA ENTRADA (HORARIOS DE TRABALHO) COM A SUBTRACT_DEPARTURES
-            int resultDepartures = markingMade.getWorkingHours().getEntryTime().getHour() + subtractDepartures;
-            
-            
-            if (resultEntrys >= 24) { // SE MAIOR QUE 24 A ENTRADA FOI REALIZA NO DIA POSTERIOR A ENTRADA ESPERADA
-            	markingMade.setEntryTime(markingMade.getEntryTime().plusDays(1));
-            	markingMade.setDepartureTime(markingMade.getDepartureTime().plusDays(1));
-            
-            } else if (resultDepartures >= 24) { // SE MAIOR QUE 24 A SAÍDA FOI REALIZA NO DIA POSTERIOR A SAÍDA ESPERADA
-            	markingMade.setDepartureTime(markingMade.getDepartureTime().plusDays(1));
+				// CRIA DA DATE E HORARIO DA MARCAÇÃO
+				LocalDate date = LocalDate.now();
+				LocalTime entryTime = LocalTime.parse(txtEntryTimeMKMade.getText().toString());
+				LocalTime departureTime = LocalTime.parse(txtDepartureTimeMKMade.getText().toString());
+
+				// SETA O OBJETO DE MARCAÇÃO COM A DATA DA MARCAÇÃO
+				markingMade.setEntryTime(LocalDateTime.of(date, entryTime));
+				markingMade.setDepartureTime(LocalDateTime.of(date, departureTime));
+
+				// RELACIONA A MARCAÇÃO FEITA COM UM HORÁRIO DE TRABALHO
+				WorkingHours workingHours = listWorkingHours.get(Integer.parseInt(txtIdMKMake.getText()));
+				markingMade.setWorkingHours(workingHours);
+
+				// VERIFICA SE A MARÇÃO FOI REALIZADA NO MESMO DIA OU NO DIA POSTERIOR
+				int resultEntrys = controller.nextDayEntry(markingMade, entryTime);
+				int resultDepartures = controller.nextDayDeparture(markingMade, departureTime);
+				controller.verifyEntryAndDeparture(markingMade, resultEntrys, resultDepartures);
+
+				// ADICIONA NA TABELA
+				tbModelMKMade.addRow(markingMade);
+
+				// ADICIONA AS HORAS PENDENTES NAS TABELAS
+				controller.addPendingHours(markingMade, workingHours, tableWorkingHours, tbMKMade, tbModelHRDelay,
+						tbModelOverTime);
 			}
-            
-
-            // ADICIONA NA TABELA
-            tbModelMKMade.addRow(markingMade);
-            
-            //VERIFICA SE ENTRADA FOI DEPOIS DA ENTRADA PROGRAMADA OU SE A SAIDA FOI ANTES DA SAIDA PROGRAMADA (HORARIO DE TRABALHO)
-			if (markingMade.getEntryTime().isAfter(workingHours.getEntryTime()) 
-					|| markingMade.getDepartureTime().isBefore(workingHours.getDepartureTime())) {
-				delayService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbModelHRDelay);
-
-			}
-			
-			// VERIFICA SE A ENTRADA FOI ANTES OU SE A SAIDA FOI DEPOIS DA ENTRADA PROGRAMADA
-			if (markingMade.getEntryTime().isBefore(workingHours.getEntryTime()) 
-					|| markingMade.getDepartureTime().isAfter(workingHours.getDepartureTime())) {
-                overTimeService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbModelOverTime);
-			} 
-            
-            
-            
-            
-            //Usar localDateTime
-
-            //Obtem as horas pendentes
-            /*
-            int pendingHoursDeparture = overTimeService.calcPendingHoursDeparture(workingHours, markingMade);
-            int pendingHoursEntry = overTimeService.calcPendingHoursEntry(workingHours, markingMade);
-
-			if (pendingHoursEntry < 0 || pendingHoursDeparture < 0) {
-				delayService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbModelHRDelay);
-
-			} 
-			
-			if (pendingHoursEntry > 0 || pendingHoursDeparture > 0) {
-                overTimeService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbModelOverTime);
-            
-			} else if (pendingHoursEntry == 0 && markingMade.getEntryTime().isBefore(workingHours.getEntryTime())
-					|| pendingHoursDeparture == 0 && markingMade.getEntryTime().isBefore(workingHours.getEntryTime())) {
-				// Hora extra
-				OverTime newOverTime = new OverTime();
-				newOverTime.setEntryTime(markingMade.getEntryTime());
-				newOverTime.setDepartureTime(workingHours.getEntryTime());
-				tbModelOverTime.addRow(newOverTime);
-
-				// Atraso
-				HoursDelay newHoursDelay = new HoursDelay();
-				newHoursDelay.setEntryTime(markingMade.getDepartureTime());
-				newHoursDelay.setDepartureTime(workingHours.getDepartureTime());
-				tbModelHRDelay.addRow(newHoursDelay);
-
-			} else if (pendingHoursEntry == 0 && markingMade.getEntryTime().isAfter(workingHours.getEntryTime())
-					|| pendingHoursDeparture == 0 && markingMade.getEntryTime().isAfter(workingHours.getEntryTime())) {
-				// Hora extra
-				OverTime newOverTime = new OverTime();
-				newOverTime.setEntryTime(workingHours.getDepartureTime());
-				newOverTime.setDepartureTime(markingMade.getDepartureTime());
-				tbModelOverTime.addRow(newOverTime);
-
-				// Atraso
-				HoursDelay newHoursDelay = new HoursDelay();
-				newHoursDelay.setEntryTime(workingHours.getEntryTime());
-				newHoursDelay.setDepartureTime(markingMade.getEntryTime());
-				tbModelHRDelay.addRow(newHoursDelay);
-				
-			}
-             */
-            
+             
         } catch (Exception ex) {
+        	msgInvalidTime();
             Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         }
 
