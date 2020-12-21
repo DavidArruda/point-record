@@ -58,22 +58,4 @@ public interface CalculateHoursService {
 	 */
 	LinkedList<?> getList(JTable workingHours) throws Exception;
 
-	/**
-	 * Calcula as horas pendentes. se == 0 então não possui horas pendentes.
-	 * 
-	 * @param workingHours
-	 * @param markingMade
-	 * @return int
-	 */
-	int calcPendingHoursEntry(WorkingHours workingHours, MarkingMade markingMade);
-	
-	/**
-	 * Calcula as horas pendentes. se == 0 então não possui horas pendentes.
-	 * 
-	 * @param workingHours
-	 * @param markingMade
-	 * @return int
-	 */
-	int calcPendingHoursDeparture(WorkingHours workingHours, MarkingMade markingMade);
-
 }

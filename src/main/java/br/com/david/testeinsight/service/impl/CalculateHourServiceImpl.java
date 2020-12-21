@@ -36,37 +36,5 @@ public abstract class CalculateHourServiceImpl implements CalculateHoursService 
 																				// classe ele será chamado
 		return list;
 	}
-	
-	@Override
-	public int calcPendingHoursDeparture(WorkingHours workingHours, MarkingMade markingMade) {
-		int hoursPending;
-		
-		// SE A SAIDA DA MARCAÇÃO FOR ANTES DA SAIDA DO HORÁRIO DE TRABALHO
-		if (markingMade.getDepartureTime().isBefore(workingHours.getDepartureTime())) {
-			hoursPending = markingMade.getDepartureTime().getHour() - workingHours.getDepartureTime().getHour();
-		
-		} else {
-			hoursPending = workingHours.getDepartureTime().getHour() - markingMade.getDepartureTime().getHour();
-		}
-		
-		return hoursPending;
-	}
-	
-	@Override
-	public int calcPendingHoursEntry(WorkingHours workingHours, MarkingMade markingMade) {
-		int hoursPending;
-
-		// SE A ENTRADA DA MARCAÇÃO FOR APÓS A ENTRADA DO HORÁRIO DE TRABALHO
-		if (markingMade.getEntryTime().isAfter(workingHours.getEntryTime())) {
-			hoursPending = markingMade.getEntryTime().getHour() - workingHours.getEntryTime().getHour();
-		
-		} else {
-			hoursPending = workingHours.getEntryTime().getHour() - markingMade.getEntryTime().getHour();
-		}
-
-		return hoursPending;
-	}
-	
-	
 
 }
