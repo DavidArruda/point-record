@@ -1,7 +1,5 @@
 package br.com.david.testeinsight.model;
 
-import java.time.format.DateTimeFormatter;
-
 /**
  * Classe modelo para representar Horário de trabalho
  *
@@ -15,9 +13,9 @@ public class WorkingHours extends AbstractModel {
     public Object value(int column) {   
         switch (column) {
             case 0:
-                return entryTime.format(DateTimeFormatter.ofPattern("hh:mm"));
+            	return entryTime.toLocalTime().toString();
             case 1:
-                return departureTime.format(DateTimeFormatter.ofPattern("hh:mm"));
+                return departureTime.toLocalTime().toString();
                 case 2:
                 return this.id.toString();
             default: 
@@ -25,7 +23,7 @@ public class WorkingHours extends AbstractModel {
         }
     }
 
-    static public Object[] getColumnsWorkingHours() {
+    public static Object[] getColumnsWorkingHours() {
         return new String[]{"Entrada", "Saída", "ID"};
     }
 
