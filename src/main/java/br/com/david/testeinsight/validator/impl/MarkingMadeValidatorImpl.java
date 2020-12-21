@@ -10,5 +10,4 @@ import br.com.david.testeinsight.validator.MarkingMadeValidator;
  */
 public class MarkingMadeValidatorImpl extends FieldValidatorAbstract implements MarkingMadeValidator{
 	
-
 }

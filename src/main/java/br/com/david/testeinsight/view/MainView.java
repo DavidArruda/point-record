@@ -26,17 +26,17 @@ import br.com.david.testeinsight.validator.impl.WorkingHoursValidatorImpl;
  * @author David Arruda
  */
 public class MainView extends javax.swing.JFrame {
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	private int generateId = 0;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    private int generateId = 0;
 
     //WorkingHours
     private LinkedList<WorkingHours> listWorkingHours = new LinkedList<>();
-    private TableModel tbWKHours = new TableModel(listWorkingHours, WorkingHours.getColumnsWorkingHours());
+    private TableModel tbWKHours = new TableModel(listWorkingHours, WorkingHours.getColumns());
 
     //MarkingMade
     private LinkedList<MarkingMade> listMkMades = new LinkedList<>();
@@ -45,14 +45,14 @@ public class MainView extends javax.swing.JFrame {
     //HoursDelay
     private LinkedList<HoursDelay> listHRDelays = new LinkedList<>();
     private TableModel tbModelHRDelay = new TableModel(listHRDelays, HoursDelay.getColumns());
-    
+
     //OverTime
     private LinkedList<OverTime> listOverTime = new LinkedList<>();
-    private TableModel tbModelOverTime= new TableModel(listOverTime, OverTime.getColumns());
+    private TableModel tbModelOverTime = new TableModel(listOverTime, OverTime.getColumns());
 
     // CONTROLLER
     private MarkingMadeController controller = new MarkingMadeController();
-    
+
     // VALIDATES
     WorkingHoursValidator validatorWK = new WorkingHoursValidatorImpl();
     MarkingMadeValidator validatorMK = new MarkingMadeValidatorImpl();
@@ -68,24 +68,28 @@ public class MainView extends javax.swing.JFrame {
         tableWorkingHours.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tableWorkingHours.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tableWorkingHours.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
-
+        tableWorkingHours.setEnabled(false);
+        
         // Table MarkingMade
         tbMKMade.setModel(tbModelMKMade); // Define o modelo de dados para esta tabela
         tbMKMade.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tbMKMade.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tbMKMade.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
-
+        tbMKMade.setEnabled(false);
+        
         // Table HoursDelays
         tbHRDelays.setModel(tbModelHRDelay); // Define o modelo de dados para esta tabela
         tbHRDelays.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tbHRDelays.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tbHRDelays.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
+        tbHRDelays.setEnabled(false);
         
         // Table OverTime
         tbOverTime.setModel(tbModelOverTime); // Define o modelo de dados para esta tabela
         tbOverTime.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tbOverTime.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tbOverTime.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
+        tbOverTime.setEnabled(false);
     }
 
     /**
@@ -118,8 +122,8 @@ public class MainView extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnSaveMKMade = new javax.swing.JButton();
         btnNewMKMade = new javax.swing.JButton();
-        txtIdMKMake = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
+        cbBoxWorkingHours = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
         jPanelHRDelays = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -195,7 +199,7 @@ public class MainView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSaveWkHours, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,12 +292,6 @@ public class MainView extends javax.swing.JFrame {
             }
         });
 
-        try {
-            txtIdMKMake.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
         jLabel7.setText("ID Jornada de trabalho");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -311,15 +309,12 @@ public class MainView extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtIdMKMake, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                        .addGap(14, 14, 14)
-                        .addComponent(btnNewMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSaveMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(cbBoxWorkingHours, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnNewMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(btnSaveMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -336,7 +331,7 @@ public class MainView extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEntryTimeMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDepartureTimeMKMade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIdMKMake, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbBoxWorkingHours, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
@@ -354,7 +349,7 @@ public class MainView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelMKMadeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
                     .addComponent(jSeparator1))
                 .addContainerGap())
         );
@@ -423,7 +418,7 @@ public class MainView extends javax.swing.JFrame {
             jPanelOverTimeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOverTimeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane4)
                 .addContainerGap())
         );
         jPanelOverTimeLayout.setVerticalGroup(
@@ -440,14 +435,14 @@ public class MainView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanelHRDelays, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelWkHours, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelWkHours, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelHRDelays, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelMKMade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelOverTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,87 +463,90 @@ public class MainView extends javax.swing.JFrame {
 
     private void btnSaveWkHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveWkHoursActionPerformed
         WorkingHours workingHours = new WorkingHours();
-        
-		try {
-			if (validatorWK.validate(new String[] { txtEntryTimeWkHours.getText(), txtDepartureTimeWkHours.getText() })) {
 
-				LocalDate date = LocalDate.now();
-				LocalTime entryTime = LocalTime.parse(txtEntryTimeWkHours.getText().toString());
-				LocalTime departureTime = LocalTime.parse(txtDepartureTimeWkHours.getText().toString());
+        try {
+            if (validatorWK.validate(new String[]{txtEntryTimeWkHours.getText(), txtDepartureTimeWkHours.getText()})) {
 
-				workingHours.setEntryTime(LocalDateTime.of(date, entryTime));
-				workingHours.setDepartureTime(LocalDateTime.of(date, departureTime));
+                LocalDate date = LocalDate.now();
+                LocalTime entryTime = LocalTime.parse(txtEntryTimeWkHours.getText().toString());
+                LocalTime departureTime = LocalTime.parse(txtDepartureTimeWkHours.getText().toString());
 
-				// VERIFICA SE O HORARIO DE ENTRADA É MAIOR QUE O HORÁRIO DE SAIDA
-				if (entryTime.getHour() > departureTime.getHour()) {
-					workingHours.setDepartureTime(workingHours.getDepartureTime().plusDays(1)); // MUDA A SAÍDA PARA O PRÓXIMO DIA
-				}
+                workingHours.setEntryTime(LocalDateTime.of(date, entryTime));
+                workingHours.setDepartureTime(LocalDateTime.of(date, departureTime));
 
-				int newId = generateId;
-				workingHours.setId(newId);
+                // VERIFICA SE O HORARIO DE ENTRADA É MAIOR QUE O HORÁRIO DE SAIDA
+                if (entryTime.getHour() > departureTime.getHour()) {
+                    workingHours.setDepartureTime(workingHours.getDepartureTime().plusDays(1)); // MUDA A SAÍDA PARA O PRÓXIMO DIA
+                }
 
-				generateId++;
+                int newId = generateId;
+                workingHours.setId(newId);
 
-				tbWKHours.addRow(workingHours);
+                generateId++;
 
-				if (listWorkingHours.size() >= 3) {
-					btnSaveWkHours.setEnabled(false);
-					btnNewWKHours.setEnabled(false);
-				}
-			}
-			
-		} catch (Exception e) {
-			msgInvalidTime();
-			e.printStackTrace();
-		}
-		
+                tbWKHours.addRow(workingHours);
+
+                cbBoxWorkingHours.addItem(workingHours.getEntryTime().toLocalTime() + " as " + workingHours.getDepartureTime().toLocalTime());
+
+                if (listWorkingHours.size() >= 3) {
+                    btnSaveWkHours.setEnabled(false);
+                    btnNewWKHours.setEnabled(false);
+                }
+            }
+
+        } catch (Exception e) {
+            msgInvalidTime();
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_btnSaveWkHoursActionPerformed
 
-	/**
-	 * 
-	 */
-	private void msgInvalidTime() {
-		JOptionPane.showMessageDialog(null, "Digite um horário válido. Ex 08:45");
-	}
+    /**
+     *
+     */
+    private void msgInvalidTime() {
+        JOptionPane.showMessageDialog(null, "Digite um horário válido. Ex 08:45");
+    }
 
     private void btnSaveMKMadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveMKMadeActionPerformed
-    	
+
         try {
-        	
-			if (validatorMK.validate(new String[] { txtEntryTimeMKMade.getText().toString(),
-					txtDepartureTimeMKMade.getText().toString() })) {
 
-				// CRIA O OBJETO DE MARCAÇÃO
-				MarkingMade markingMade = new MarkingMade();
+            if (validatorMK.validate(new String[]{txtEntryTimeMKMade.getText().toString(),
+                txtDepartureTimeMKMade.getText().toString()})) {
 
-				// CRIA DA DATE E HORARIO DA MARCAÇÃO
-				LocalDate date = LocalDate.now();
-				LocalTime entryTime = LocalTime.parse(txtEntryTimeMKMade.getText().toString());
-				LocalTime departureTime = LocalTime.parse(txtDepartureTimeMKMade.getText().toString());
+                // CRIA O OBJETO DE MARCAÇÃO
+                MarkingMade markingMade = new MarkingMade();
 
-				// SETA O OBJETO DE MARCAÇÃO COM A DATA DA MARCAÇÃO
-				markingMade.setEntryTime(LocalDateTime.of(date, entryTime));
-				markingMade.setDepartureTime(LocalDateTime.of(date, departureTime));
+                // CRIA DA DATE E HORARIO DA MARCAÇÃO
+                LocalDate date = LocalDate.now();
+                LocalTime entryTime = LocalTime.parse(txtEntryTimeMKMade.getText().toString());
+                LocalTime departureTime = LocalTime.parse(txtDepartureTimeMKMade.getText().toString());
 
-				// RELACIONA A MARCAÇÃO FEITA COM UM HORÁRIO DE TRABALHO
-				WorkingHours workingHours = listWorkingHours.get(Integer.parseInt(txtIdMKMake.getText()));
-				markingMade.setWorkingHours(workingHours);
+                // SETA O OBJETO DE MARCAÇÃO COM A DATA DA MARCAÇÃO
+                markingMade.setEntryTime(LocalDateTime.of(date, entryTime));
+                markingMade.setDepartureTime(LocalDateTime.of(date, departureTime));
 
-				// VERIFICA SE A MARÇÃO FOI REALIZADA NO MESMO DIA OU NO DIA POSTERIOR
-				int resultEntrys = controller.nextDayEntry(markingMade, entryTime);
-				int resultDepartures = controller.nextDayDeparture(markingMade, departureTime);
-				controller.verifyEntryAndDeparture(markingMade, resultEntrys, resultDepartures);
+                // RELACIONA A MARCAÇÃO FEITA COM UM HORÁRIO DE TRABALHO
+                WorkingHours workingHours = listWorkingHours.get(cbBoxWorkingHours.getSelectedIndex());
+                markingMade.setWorkingHours(workingHours);
 
-				// ADICIONA NA TABELA
-				tbModelMKMade.addRow(markingMade);
+                // VERIFICA SE A MARÇÃO FOI REALIZADA NO MESMO DIA OU NO DIA POSTERIOR
+                int resultEntrys = controller.nextDayEntry(markingMade, entryTime);
+                int resultDepartures = controller.nextDayDeparture(markingMade, departureTime);
+                
+                controller.verifyEntryAndDeparture(markingMade, resultEntrys, resultDepartures);
 
-				// ADICIONA AS HORAS PENDENTES NAS TABELAS
-				controller.addPendingHours(markingMade, workingHours, tableWorkingHours, tbMKMade, tbModelHRDelay,
-						tbModelOverTime);
-			}
-             
+                // ADICIONA NA TABELA
+                tbModelMKMade.addRow(markingMade);
+
+                // ADICIONA AS HORAS PENDENTES NAS TABELAS
+                controller.addPendingHours(markingMade, workingHours, tableWorkingHours, tbMKMade, tbModelHRDelay,
+                        tbModelOverTime);
+            }
+
         } catch (Exception ex) {
-        	msgInvalidTime();
+            msgInvalidTime();
             Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -557,7 +555,6 @@ public class MainView extends javax.swing.JFrame {
     private void btnNewMKMadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewMKMadeActionPerformed
         txtDepartureTimeMKMade.setText("");
         txtEntryTimeMKMade.setText("");
-        txtIdMKMake.setText("");
     }//GEN-LAST:event_btnNewMKMadeActionPerformed
 
     private void btnNewWKHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewWKHoursActionPerformed
@@ -605,6 +602,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton btnNewWKHours;
     private javax.swing.JButton btnSaveMKMade;
     private javax.swing.JButton btnSaveWkHours;
+    private javax.swing.JComboBox<String> cbBoxWorkingHours;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -630,6 +628,5 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtDepartureTimeWkHours;
     private javax.swing.JFormattedTextField txtEntryTimeMKMade;
     private javax.swing.JFormattedTextField txtEntryTimeWkHours;
-    private javax.swing.JFormattedTextField txtIdMKMake;
     // End of variables declaration//GEN-END:variables
 }

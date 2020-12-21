@@ -16,7 +16,7 @@ public class MarkingMade extends AbstractModel {
             case 1:
                 return departureTime.toLocalTime().toString();
             case 2:
-                return workingHours.getId().toString();
+                return workingHours.getEntryTime().toLocalTime() + " as " + workingHours.getDepartureTime().toLocalTime();
             default: 
                 return" - ";
         }
