@@ -23,7 +23,8 @@ public class TableModel extends DefaultTableModel {
      * @param list
      * @param colunms
      */
-    public TableModel(LinkedList list, Object[] colunms) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public TableModel(LinkedList list, Object[] colunms) {
         super(colunms, 0);
         this.list = list;
     }
