@@ -31,16 +31,6 @@ public interface CalculateHoursService {
 	void subtractBetweenHours(JTable workingHours, JTable markingMade, TableModel tableModel, int indexCombox) throws Exception;
 
 	/**
-	 * Se return == 0 então não existe horas pedentes. Se return >0 então existe
-	 * horas extra. se return <0 então existe horas de atraso.
-	 *
-	 * @param workingHours
-	 * @param markingMade
-	 * @return int hours
-	 */
-	int subtractPeriods(WorkingHours workingHours, MarkingMade markingMade);
-
-	/**
 	 * Calcula os períodos a ser adicionado no JTable de Atrasos ou HorasExtra
 	 *
 	 * @param workingHours
