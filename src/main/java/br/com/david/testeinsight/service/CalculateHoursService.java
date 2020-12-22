@@ -22,12 +22,13 @@ public interface CalculateHoursService {
 	 *
 	 * @param workingHours
 	 * @param markingMade
+	 * @param indexCombox 
 	 * @param hoursDelay
 	 * @throws Exception
 	 * 
 	 * @return void
 	 */
-	void subtractBetweenHours(JTable workingHours, JTable markingMade, TableModel tableModel) throws Exception;
+	void subtractBetweenHours(JTable workingHours, JTable markingMade, TableModel tableModel, int indexCombox) throws Exception;
 
 	/**
 	 * Se return == 0 então não existe horas pedentes. Se return >0 então existe
