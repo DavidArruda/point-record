@@ -33,18 +33,18 @@ public class MarkingMadeController {
      * @param tbModelOverTime
      * @throws Exception
      */
-	public void addPendingHours(MarkingMade markingMade, WorkingHours workingHours, JTable tableWorkingHours, JTable tbMKMade, TableModel tbModelHRDelay, TableModel tbModelOverTime) throws Exception {
+	public void addPendingHours(MarkingMade markingMade, WorkingHours workingHours, JTable tableWorkingHours, JTable tbMKMade, TableModel tbModelHRDelay, TableModel tbModelOverTime, int indexCombox) throws Exception {
 		//VERIFICA SE ENTRADA FOI DEPOIS DA ENTRADA PROGRAMADA OU SE A SAIDA FOI ANTES DA SAIDA PROGRAMADA (HORARIO DE TRABALHO)
 		if (markingMade.getEntryTime().isAfter(workingHours.getEntryTime()) 
 				|| markingMade.getDepartureTime().isBefore(workingHours.getDepartureTime())) {
-			delayService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbModelHRDelay);
-
+			delayService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbModelHRDelay, indexCombox);
+			
 		}
 		
 		// VERIFICA SE A ENTRADA FOI ANTES OU SE A SAIDA FOI DEPOIS DA ENTRADA PROGRAMADA
 		if (markingMade.getEntryTime().isBefore(workingHours.getEntryTime()) 
 				|| markingMade.getDepartureTime().isAfter(workingHours.getDepartureTime())) {
-		    overTimeService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbModelOverTime);
+		    overTimeService.subtractBetweenHours(tableWorkingHours, tbMKMade, tbModelOverTime, indexCombox);
 		}
 	}
 
