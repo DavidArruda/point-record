@@ -7,4 +7,6 @@ package br.com.david.testeinsight.model;
  */
 public class OverTime extends AbstractModel {
 
+	private static final long serialVersionUID = 1L;
+
 }

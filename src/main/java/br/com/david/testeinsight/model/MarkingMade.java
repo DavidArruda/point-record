@@ -6,7 +6,9 @@ package br.com.david.testeinsight.model;
  */
 public class MarkingMade extends AbstractModel {
 
-    private WorkingHours workingHours = new WorkingHours();
+	private static final long serialVersionUID = 1L;
+	
+	private WorkingHours workingHours;
 
     @Override
     public Object value(int column) {   
@@ -33,5 +35,5 @@ public class MarkingMade extends AbstractModel {
     public void setWorkingHours(WorkingHours workingHours) {
         this.workingHours = workingHours;
     }
-
+    
 }

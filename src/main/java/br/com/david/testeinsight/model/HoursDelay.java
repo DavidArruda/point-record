@@ -5,5 +5,7 @@ package br.com.david.testeinsight.model;
  * @author David Arruda
  */
 public class HoursDelay extends AbstractModel{
+
+	private static final long serialVersionUID = 1L;
     
 }
