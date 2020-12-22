@@ -1,12 +1,15 @@
 package br.com.david.testeinsight.view;
 
+import java.awt.event.ItemEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 import br.com.david.testeinsight.controller.MarkingMadeController;
@@ -32,8 +35,6 @@ public class MainView extends javax.swing.JFrame {
      */
     private static final long serialVersionUID = 1L;
 
-    private int generateId = 0;
-
     //WorkingHours
     private LinkedList<WorkingHours> listWorkingHours = new LinkedList<>();
     private TableModel tbWKHours = new TableModel(listWorkingHours, WorkingHours.getColumns());
@@ -57,6 +58,12 @@ public class MainView extends javax.swing.JFrame {
     WorkingHoursValidator validatorWK = new WorkingHoursValidatorImpl();
     MarkingMadeValidator validatorMK = new MarkingMadeValidatorImpl();
 
+    // CRIA O OBJETO DE MARCAÇÃO
+    MarkingMade markingMade = new MarkingMade();
+    
+    // Gerador de ID
+    private Random idGenerator = new Random();
+
     /**
      * Creates new form MainView
      */
@@ -69,27 +76,31 @@ public class MainView extends javax.swing.JFrame {
         tableWorkingHours.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tableWorkingHours.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
         tableWorkingHours.setEnabled(false);
-        
+
         // Table MarkingMade
         tbMKMade.setModel(tbModelMKMade); // Define o modelo de dados para esta tabela
         tbMKMade.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tbMKMade.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tbMKMade.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
         tbMKMade.setEnabled(false);
-        
+
         // Table HoursDelays
         tbHRDelays.setModel(tbModelHRDelay); // Define o modelo de dados para esta tabela
         tbHRDelays.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tbHRDelays.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tbHRDelays.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
         tbHRDelays.setEnabled(false);
-        
+
         // Table OverTime
         tbOverTime.setModel(tbModelOverTime); // Define o modelo de dados para esta tabela
         tbOverTime.setColumnSelectionAllowed(false); // Define se as colunas neste modelo podem ser selecionadas.
         tbOverTime.getTableHeader().setReorderingAllowed(false); // Define se o usuário pode arrastar cabeçalhos de coluna para reordenar colunas.
         tbOverTime.setDefaultRenderer(Object.class, new TableCellRenderer()); // Define um renderizador de célula padrão a ser usado
         tbOverTime.setEnabled(false);
+        
+        // COMBO BOX
+        cbBoxWorkingHours.setModel(new DefaultComboBoxModel(listWorkingHours.toArray()));
+        cbBoxWorkingHours.setSelectedIndex(-1);
     }
 
     /**
@@ -294,6 +305,12 @@ public class MainView extends javax.swing.JFrame {
 
         jLabel7.setText("ID Jornada de trabalho");
 
+        cbBoxWorkingHours.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbBoxWorkingHoursItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -473,25 +490,26 @@ public class MainView extends javax.swing.JFrame {
 
                 workingHours.setEntryTime(LocalDateTime.of(date, entryTime));
                 workingHours.setDepartureTime(LocalDateTime.of(date, departureTime));
+                workingHours.setId(idGenerator.nextInt());
 
                 // VERIFICA SE O HORARIO DE ENTRADA É MAIOR QUE O HORÁRIO DE SAIDA
                 if (entryTime.getHour() > departureTime.getHour()) {
                     workingHours.setDepartureTime(workingHours.getDepartureTime().plusDays(1)); // MUDA A SAÍDA PARA O PRÓXIMO DIA
                 }
 
-                int newId = generateId;
-                workingHours.setId(newId);
-
-                generateId++;
-
                 tbWKHours.addRow(workingHours);
 
-                cbBoxWorkingHours.addItem(workingHours.getEntryTime().toLocalTime() + " as " + workingHours.getDepartureTime().toLocalTime());
+                cbBoxWorkingHours.addItem(workingHours);
+                cbBoxWorkingHours.setSelectedItem(workingHours);
 
                 if (listWorkingHours.size() >= 3) {
                     btnSaveWkHours.setEnabled(false);
                     btnNewWKHours.setEnabled(false);
                 }
+                
+                txtEntryTimeWkHours.setText("");
+                txtDepartureTimeWkHours.setText("");
+                
             }
 
         } catch (Exception e) {
@@ -515,10 +533,7 @@ public class MainView extends javax.swing.JFrame {
             if (validatorMK.validate(new String[]{txtEntryTimeMKMade.getText().toString(),
                 txtDepartureTimeMKMade.getText().toString()})) {
 
-                // CRIA O OBJETO DE MARCAÇÃO
-                MarkingMade markingMade = new MarkingMade();
-
-                // CRIA DA DATE E HORARIO DA MARCAÇÃO
+                // CRIAÃOÃO DA DATA E HORARIO DA MARCAÇÃO
                 LocalDate date = LocalDate.now();
                 LocalTime entryTime = LocalTime.parse(txtEntryTimeMKMade.getText().toString());
                 LocalTime departureTime = LocalTime.parse(txtDepartureTimeMKMade.getText().toString());
@@ -526,15 +541,15 @@ public class MainView extends javax.swing.JFrame {
                 // SETA O OBJETO DE MARCAÇÃO COM A DATA DA MARCAÇÃO
                 markingMade.setEntryTime(LocalDateTime.of(date, entryTime));
                 markingMade.setDepartureTime(LocalDateTime.of(date, departureTime));
+                markingMade.setId(idGenerator.nextInt());
 
                 // RELACIONA A MARCAÇÃO FEITA COM UM HORÁRIO DE TRABALHO
-                WorkingHours workingHours = listWorkingHours.get(cbBoxWorkingHours.getSelectedIndex());
+                WorkingHours workingHours = (WorkingHours)cbBoxWorkingHours.getSelectedItem();
                 markingMade.setWorkingHours(workingHours);
 
                 // VERIFICA SE A MARÇÃO FOI REALIZADA NO MESMO DIA OU NO DIA POSTERIOR
                 int resultEntrys = controller.nextDayEntry(markingMade, entryTime);
                 int resultDepartures = controller.nextDayDeparture(markingMade, departureTime);
-                
                 controller.verifyEntryAndDeparture(markingMade, resultEntrys, resultDepartures);
 
                 // ADICIONA NA TABELA
@@ -542,7 +557,12 @@ public class MainView extends javax.swing.JFrame {
 
                 // ADICIONA AS HORAS PENDENTES NAS TABELAS
                 controller.addPendingHours(markingMade, workingHours, tableWorkingHours, tbMKMade, tbModelHRDelay,
-                        tbModelOverTime);
+                        tbModelOverTime, cbBoxWorkingHours.getSelectedIndex());
+                
+                markingMade = new MarkingMade();
+                
+                txtDepartureTimeMKMade.setText("");
+                txtEntryTimeMKMade.setText("");
             }
 
         } catch (Exception ex) {
@@ -561,6 +581,13 @@ public class MainView extends javax.swing.JFrame {
         txtDepartureTimeWkHours.setText("");
         txtEntryTimeWkHours.setText("");
     }//GEN-LAST:event_btnNewWKHoursActionPerformed
+
+    private void cbBoxWorkingHoursItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbBoxWorkingHoursItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            markingMade.setWorkingHours((WorkingHours) cbBoxWorkingHours.getSelectedItem());
+            cbBoxWorkingHours.setSelectedItem(markingMade);
+        }
+    }//GEN-LAST:event_cbBoxWorkingHoursItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -602,7 +629,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton btnNewWKHours;
     private javax.swing.JButton btnSaveMKMade;
     private javax.swing.JButton btnSaveWkHours;
-    private javax.swing.JComboBox<String> cbBoxWorkingHours;
+    private javax.swing.JComboBox<WorkingHours> cbBoxWorkingHours;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
