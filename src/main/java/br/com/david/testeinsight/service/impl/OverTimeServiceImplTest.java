@@ -18,12 +18,12 @@ import br.com.david.testeinsight.table.TableModel;
 public class OverTimeServiceImplTest extends CalculateHourServiceImpl implements OverTimeServiceTest {
 
 	@Override
-	public void subtractBetweenHours(JTable workingHours, JTable markingMade, TableModel tbOverTime) throws Exception {
+	public void subtractBetweenHours(JTable workingHours, JTable markingMade, TableModel tbOverTime, int indexComboBox) throws Exception {
 		LinkedList<WorkingHours> listWorkingHours = getList(workingHours);
 		LinkedList<MarkingMade> listMKMades = getList(markingMade);
 
 		// Pega os objetos na lista (jornada e marcação feita)
-		var jornadaTrabalho = listWorkingHours.getLast();
+		var jornadaTrabalho = listWorkingHours.get(indexComboBox);
 		var marcacaoFeita = listMKMades.getLast();
 
 		// Pega o periodo para ser inserido no jTable de hora extra
@@ -36,6 +36,7 @@ public class OverTimeServiceImplTest extends CalculateHourServiceImpl implements
 
 		// Insere no jTable
 		tbOverTime.addRow(overTime);
+		overTime = null;
 
 		if (entryAndDeparture.length == 4) {
 			OverTime overTime2 = new OverTime();
@@ -44,6 +45,8 @@ public class OverTimeServiceImplTest extends CalculateHourServiceImpl implements
 
 			// Insere no JTable
 			tbOverTime.addRow(overTime2);
+			
+			overTime2 = null;
 		}
 
 	}

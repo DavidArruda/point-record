@@ -20,12 +20,12 @@ public class HoursDelayServiceImpl extends CalculateHourServiceImpl implements H
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void subtractBetweenHours(JTable workingHours, JTable markingMade, TableModel tbHoursDelay)
+	public void subtractBetweenHours(JTable workingHours, JTable markingMade, TableModel tbHoursDelay, int indexCombox)
 			throws Exception {
 		LinkedList<WorkingHours> listWorkingHours = getList(workingHours);
 		LinkedList<MarkingMade> listMKMades = getList(markingMade);
 
-		var jornadaTrabalho = listWorkingHours.getLast();
+		var jornadaTrabalho = listWorkingHours.get(indexCombox);
 		var marcacaoFeita = listMKMades.getLast();
 
 		LocalDateTime[] entryAndDeparture = getPeriod(jornadaTrabalho, marcacaoFeita);
