@@ -530,13 +530,13 @@ public class MainView extends javax.swing.JFrame {
 
         try {
 
-            if (validatorMK.validate(new String[]{txtEntryTimeMKMade.getText().toString(),
-                txtDepartureTimeMKMade.getText().toString()})) {
+            if (validatorMK.validate(new String[]{txtEntryTimeMKMade.getText(),
+                txtDepartureTimeMKMade.getText()})) {
 
                 // CRIAÃOÃO DA DATA E HORARIO DA MARCAÇÃO
                 LocalDate date = LocalDate.now();
-                LocalTime entryTime = LocalTime.parse(txtEntryTimeMKMade.getText().toString());
-                LocalTime departureTime = LocalTime.parse(txtDepartureTimeMKMade.getText().toString());
+                LocalTime entryTime = LocalTime.parse(txtEntryTimeMKMade.getText());
+                LocalTime departureTime = LocalTime.parse(txtDepartureTimeMKMade.getText());
 
                 // SETA O OBJETO DE MARCAÇÃO COM A DATA DA MARCAÇÃO
                 markingMade.setEntryTime(LocalDateTime.of(date, entryTime));
